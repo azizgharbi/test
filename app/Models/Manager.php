@@ -27,7 +27,8 @@ class Manager implements TestInterface
      * @param int $amount
      * @return string
      */
-    public function getInterestsCountry(int $amount) : string {
+    public function getInterestsCountry(int $amount) : string
+    {
         try{
             $Countries =  DB::GetCountry();
             $response = [];
