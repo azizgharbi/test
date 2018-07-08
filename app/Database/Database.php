@@ -7,15 +7,24 @@
  */
 namespace App\Database;
 
+
 class Database
 {
-    public function GetCountry(){
+    public static function GetCountry(){
+
         try{
+
             $countryArray = array();
-            $db = new \PDO('mysql:host=localhost;dbname=tekbanx', "root", "aziz");
-            $country = $db->query("SELECT * FROM `Country`");
-            foreach ($country as $c){
-                array_push($countryArray, array("name" => $c['name'],"annualInterestRate" => $c['annualInterestRate']));
+            $configs = include('config.php');
+
+            $db = new \PDO('mysql:host='.$configs["HOST"].';dbname='.$configs["DB"] , $configs["USER"], $configs["PASSWORD"]);
+            $countries = $db->query("SELECT * FROM `Country`");
+
+            foreach ($countries as $country){
+                array_push($countryArray, [
+                    "name" => $country['name'],
+                    "annualInterestRate" => $country['annualInterestRate']]
+                );
             }
             return $countryArray;
 
@@ -25,6 +34,3 @@ class Database
         }
     }
 }
-/*
- INSERT INTO `Country` (`id`, `name`, `annualInterestRate`) VALUES ('1', 'Canada', '10'), ('2', 'USA', '12'),('3', 'Mexico', '9'),('4', 'Brasil', '13');
- */

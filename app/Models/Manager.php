@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Database\Database;
+use App\Database\Database as DB;
 
 class Manager implements TestInterface
 {
@@ -10,24 +10,38 @@ class Manager implements TestInterface
      * getAnnualInterestRatesByCountry
      * @return string
      */
-    public function getAnnualInterestRateByCountry() : string {
-        $db = new Database();
-        $Countries =  $db->GetCountry();
-        return json_encode($Countries);
+    public function getAnnualInterestRateByCountry() : string
+    {
+        try {
+
+            $Countries =  DB::GetCountry();
+            return json_encode($Countries);
+
+        } catch (\Exception $e) {
+            $this->error(500, $e->getMessage());
+        }
     }
+
     /**
      * getInterestsCountry
+     * @param int $amount
      * @return string
      */
-    public function getInterestsCountry( $amount) : string {
-        $db = new Database();
-        $Countries =  $db->GetCountry();
-        $response = [];
-        foreach ($Countries as $country) {
-            $inter = ($amount * $country["annualInterestRate"] / 100) / 365 ;
-            array_push($response, array( $country['name'] => $inter + $amount ));
+    public function getInterestsCountry(int $amount) : string {
+        try{
+            $Countries =  DB::GetCountry();
+            $response = [];
+
+            foreach ($Countries as $country) {
+                $inter = ($amount * $country["annualInterestRate"] / 100) / 365 ;
+                array_push($response, [ $country['name'] => $inter + $amount ]);
+            }
+            return json_encode($response);
+
+        }catch (\Exception $e){
+            $this->error(500,$e->getMessage());
         }
-        return json_encode($response);
+
     }
 
     /**
