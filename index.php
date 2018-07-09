@@ -17,6 +17,6 @@ require 'vendor/autoload.php';
 $manager = new Manager();
 
 //show countries
-echo $manager->getAnnualInterestRateByCountry();
+echo $manager->getAnnualInterestRateByCountry([1,2]);
 //show countries interests
-echo $manager->getInterestsCountry(45);
+echo $manager->getInterestsCountry(45 , [1,2]);

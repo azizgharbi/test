@@ -8,13 +8,14 @@ class Manager implements TestInterface
 {
     /**
      * getAnnualInterestRatesByCountry
+     * @param $countryID
      * @return string
      */
-    public function getAnnualInterestRateByCountry() : string
+    public function getAnnualInterestRateByCountry(array $countryID) : string
     {
         try {
 
-            $Countries =  DB::GetCountry();
+            $Countries =  DB::GetCountry($countryID);
             return json_encode($Countries);
 
         } catch (\Exception $e) {
@@ -25,12 +26,13 @@ class Manager implements TestInterface
     /**
      * getInterestsCountry
      * @param int $amount
+     * @param array $countryIds
      * @return string
      */
-    public function getInterestsCountry(int $amount) : string
+    public function getInterestsCountry(int $amount  , array $countryIds) : string
     {
         try{
-            $Countries =  DB::GetCountry();
+            $Countries =  DB::GetCountry($countryIds);
             $response = [];
 
             foreach ($Countries as $country) {

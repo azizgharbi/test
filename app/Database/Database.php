@@ -10,16 +10,34 @@ namespace App\Database;
 
 class Database
 {
-    public static function GetCountry(){
+    /**
+     * Connect
+     * @return Object
+     */
 
+    public static function Connect(){
         try{
 
-            $countryArray = array();
             $configs = include('config.php');
+            $pdo = new \PDO('mysql:host='.$configs["HOST"].';dbname='.$configs["DB"] , $configs["USER"], $configs["PASSWORD"]);
+            return $pdo;
+        } catch (\PDOException $e) {
+            print "Error !: " . $e->getMessage() . "<br/>";
+            die();
+        }
+    }
 
-            $db = new \PDO('mysql:host='.$configs["HOST"].';dbname='.$configs["DB"] , $configs["USER"], $configs["PASSWORD"]);
-            $countries = $db->query("SELECT * FROM `Country`");
+    /**
+     * Connect
+     * @param $countriesID
+     * @return array
+     */
 
+    public  static function GetCountry(array $countriesID) : array
+    {
+        $countryArray = [];
+        $ids = join("','",$countriesID);
+        $countries = self::Connect()->query("SELECT * FROM `Country` WHERE id IN ('$ids')");
             foreach ($countries as $country){
                 array_push($countryArray, [
                     "name" => $country['name'],
@@ -27,10 +45,5 @@ class Database
                 );
             }
             return $countryArray;
-
-        } catch (\PDOException $e) {
-            print "Error !: " . $e->getMessage() . "<br/>";
-            die();
-        }
     }
 }
