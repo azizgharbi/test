@@ -19,7 +19,7 @@ class Manager implements TestInterface
             return json_encode($Countries);
 
         } catch (\Exception $e) {
-            $this->error(500, $e->getMessage());
+            $this->error($e->getCode(), $e->getMessage());
         }
     }
 
@@ -42,7 +42,7 @@ class Manager implements TestInterface
             return json_encode($response);
 
         }catch (\Exception $e){
-            $this->error(500,$e->getMessage());
+            $this->error($e->getCode(),$e->getMessage());
         }
 
     }
