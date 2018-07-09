@@ -17,7 +17,6 @@ class Database
 
     public static function Connect(){
         try{
-
             $configs = include('config.php');
             $pdo = new \PDO('mysql:host='.$configs["HOST"].';dbname='.$configs["DB"] , $configs["USER"], $configs["PASSWORD"]);
             return $pdo;
